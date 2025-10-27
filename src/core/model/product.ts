@@ -52,6 +52,42 @@ export class Product {
         this._isVisible = value;
     }
 
+    public update(fields: Partial<Omit<Product, "id">>) {
+
+        if(!fields) {
+            throw new BadRequestException("Request body is missing");
+        }
+
+        if (fields.name != null) {
+            if (fields.name.trim().length === 0) {
+                throw new BadRequestException("Name cannot be empty");
+            }
+            this.name = fields.name;
+        }
+
+        if (fields.price != null) {
+            if (fields.price <= 0) {
+                throw new BadRequestException("Price must be greater than 0");
+            }
+            this.price = fields.price;
+        }
+
+        if (fields.category != null) {
+            if (!Object.values(Category).includes(fields.category)) {
+                throw new BadRequestException(
+                    `Invalid category. Must be one of: ${Object.values(Category).join(", ")}`
+                );
+            }
+            this.category = fields.category;
+        }
+
+        if (fields.isVisible != null) {
+            this.isVisible = fields.isVisible;
+        }
+
+        return this;
+    }
+
     toJSON() {
         return {
             id: this._id,
@@ -70,6 +106,10 @@ export class Product {
 
         if (!requestBody.name || !requestBody.price || !requestBody.category) {
             throw new BadRequestException("Missing required fields: name, price, or category");
+        }
+
+        if (requestBody.name.trim().length === 0) {
+            throw new BadRequestException("Name cannot be empty");
         }
 
         if(requestBody.price <= 0 ) {

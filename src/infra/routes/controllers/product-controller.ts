@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ProductService} from "../../../core/services/product-service";
 import { Product } from "../../../core/model/product";
 import { BadRequestException } from "../../../core/exceptions/bad-request.exception";
+import {NotFoundException} from "../../../core/exceptions/not-found.exception";
 
 export class ProductController {
 
@@ -38,6 +39,33 @@ export class ProductController {
 
             return res.status(500).json({ error: "Internal server error" });
         }
+    }
+
+    public async updateProduct(_req: Request, res: Response) {
+        try {
+            const productId = Number(_req.params.id);
+
+            if (isNaN(productId)) {
+                throw new BadRequestException("Invalid product ID");
+            }
+
+            const product = await this.productService.updateProduct(productId, (_req.body as Partial<Product>))
+
+            return res.status(202).json(product);
+        } catch (error: any) {
+
+            if (error instanceof BadRequestException) {
+                return res.status(error.statusCode).json({ error: error.message });
+            }
+
+            if (error instanceof NotFoundException) {
+                return res.status(error.statusCode).json({ error: error.message });
+            }
+
+            console.error(error);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
     }
 
 }
