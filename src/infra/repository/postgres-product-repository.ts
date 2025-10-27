@@ -5,7 +5,7 @@ import { Pool } from "pg";
 export class PostgresProductRepository implements ProductRepository {
     constructor(private readonly pool: Pool) {}
 
-    async findById(productId: number): Promise<Product | null> {
+    async findById(productId: number): Promise<Product> {
         const SELECT_QUERY = `
         SELECT id, name, price, category, is_visible
         FROM products
@@ -67,8 +67,14 @@ export class PostgresProductRepository implements ProductRepository {
         );
     }
 
-    delete(id: number): void {
+    async delete(id: number): Promise<void> {
+        const DELETE_QUERY = `
+        DELETE FROM products
+        WHERE id = $1
+    `;
+        await this.pool.query(DELETE_QUERY, [id]);
     }
+
 
     async getAll(): Promise<Product[]> {
         const SELECT_QUERY = `

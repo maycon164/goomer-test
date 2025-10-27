@@ -28,6 +28,14 @@ export class ProductService {
         return await this.productRepository.getAll();
     }
 
+    public async deleteProduct(productId: number) {
+        if(! await this.productRepository.exists(productId)) {
+            throw new NotFoundException("Product not found");
+        }
+
+        await this.productRepository.delete(productId);
+    }
+
     public hello(): string {
         return "Hello World";
     }

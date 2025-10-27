@@ -68,4 +68,29 @@ export class ProductController {
 
     }
 
+    public async deleteProduct(_req: Request, res: Response) {
+        try {
+            const productId = Number(_req.params.id);
+
+            if (isNaN(productId)) {
+                throw new BadRequestException("Invalid product ID");
+            }
+
+            await this.productService.deleteProduct(productId);
+            return res.status(200).json({});
+        } catch (error: any) {
+
+            if (error instanceof BadRequestException) {
+                return res.status(error.statusCode).json({ error: error.message });
+            }
+
+            if (error instanceof NotFoundException) {
+                return res.status(error.statusCode).json({ error: error.message });
+            }
+
+            console.error(error);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+    }
+
 }

@@ -14,5 +14,6 @@ const productController = new ProductController(productService);
 router.get("/products", (req, res) => productController.getProducts(req, res));
 router.post("/products", (req, res) => productController.saveProduct(req, res));
 router.put("/products/:id", (req, res) => productController.updateProduct(req, res));
+router.delete("/products/:id", (req, res) => productController.deleteProduct(req, res))
 
 export default router;
