@@ -11,6 +11,10 @@ export class ProductService {
         return await this.productRepository.save(product);
     }
 
+    public async getProducts() {
+        return await this.productRepository.getAll();
+    }
+
     public hello(): string {
         return "Hello World";
     }

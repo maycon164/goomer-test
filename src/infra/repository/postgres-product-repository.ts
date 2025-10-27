@@ -35,8 +35,21 @@ export class PostgresProductRepository implements ProductRepository {
     delete(id: number): void {
     }
 
-    getAll(): Promise<Product[]> {
-        return Promise.resolve([]);
+    async getAll(): Promise<Product[]> {
+        const SELECT_QUERY = `
+        SELECT id, name, price, category, is_visible
+        FROM products;
+    `;
+
+        const result = await this.pool.query(SELECT_QUERY);
+
+        return result.rows.map(row => new Product(
+            row.id,
+            row.name,
+            Number(row.price),
+            row.category,
+            row.is_visible
+        ));
     }
 
 

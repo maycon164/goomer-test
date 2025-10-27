@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ProductService} from "../../../core/services/product-service";
-import {Product} from "../../../core/model/product";
-import {BadRequestException} from "../../../core/exceptions/bad-request.exception";
+import { Product } from "../../../core/model/product";
+import { BadRequestException } from "../../../core/exceptions/bad-request.exception";
 
 export class ProductController {
 
@@ -11,9 +11,14 @@ export class ProductController {
         this.productService = productService;
     }
 
-    public getProducts(_req: Request, res: Response) {
-        const message = this.productService.hello();
-        return res.status(200).json({ message })
+    public async getProducts(_req: Request, res: Response) {
+        const products= await this.productService.getProducts();
+
+        if(products.length == 0) {
+            return res.status(204);
+        }
+
+        return res.status(200).json(products)
     }
 
     public async saveProduct(req: Request, res: Response) {
