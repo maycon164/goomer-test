@@ -16,7 +16,7 @@ export class ProductController {
         const products= await this.productService.getProducts();
 
         if(products.length == 0) {
-            return res.status(204);
+            return res.status(204).json({});
         }
 
         return res.status(200).json(products)
