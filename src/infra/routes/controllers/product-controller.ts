@@ -2,7 +2,6 @@ import {Request, Response} from "express";
 import {ProductService} from "../../../core/services/product-service";
 import {Product} from "../../../core/model/product";
 import {BadRequestException} from "../../../core/exceptions/bad-request.exception";
-import {NotFoundException} from "../../../core/exceptions/not-found.exception";
 
 export class ProductController {
 
