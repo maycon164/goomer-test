@@ -88,7 +88,6 @@ export class Promotion {
         }
 
         const { description, price, daysOfWeek, initTime, endTime, productsIds, isActive } = requestBody;
-        console.log(requestBody)
 
         if (!description || price == null || !daysOfWeek || !initTime || !endTime || !productsIds) {
             throw new BadRequestException("Missing required fields: description, price, daysOfWeek, initTime, endTime, or productsIds");
