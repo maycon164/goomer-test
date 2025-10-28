@@ -6,6 +6,8 @@ import { pool } from "../db/db";
 import {PostgresPromotionRepository} from "../repository/postgres-promotion-repository";
 import {PromotionService} from "../../core/services/promotion-service";
 import {PromotionController} from "./controllers/promotion-controller";
+import {MenuService} from "../../core/services/menu-service";
+import {MenuController} from "./controllers/menu-controller";
 
 const router = Router();
 
@@ -27,5 +29,10 @@ router.get("/promotions", (req, res) => promotionController.getPromotions(req, r
 router.post("/promotions", (req, res) => promotionController.savePromotion(req, res))
 router.put("/promotions/:id", (req, res) => promotionController.updatePromotion(req, res));
 router.delete("/promotions/:id", (req, res) => promotionController.deletePromotion(req, res));
+
+const menuService = new MenuService(productRepository, promotionRepository);
+const menuController = new MenuController(menuService);
+
+router.get("/menu", (req, res) => menuController.getMenu(req, res));
 
 export default router;
