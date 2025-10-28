@@ -19,6 +19,8 @@ export class MenuService {
                 name: product.name,
                 category: product.category,
                 price: product.price,
+                promotionalPrice: product.price,
+                promotionName: ""
             }
 
             const promotion = promotions.find(promotion => promotion.productsIds.includes(product.id as number));
@@ -70,10 +72,6 @@ export class MenuService {
             const [endHour, endMinute] = promotion.endTime.split(":").map(Number);
             const initTotalMinutes = initHour * 60 + initMinute;
             const endTotalMinutes = endHour * 60 + endMinute;
-
-            console.log(initTotalMinutes, endTotalMinutes, now);
-
-            console.log("AQUI", now >= initTotalMinutes && now <= endTotalMinutes)
 
             return now >= initTotalMinutes && now <= endTotalMinutes;
         });
