@@ -1,11 +1,11 @@
 import {Product} from "../model/product";
-import {ProductRepository} from "../repository/product-repository.interface";
+import {ProductRepositoryInterface} from "../repository/product-repository.interface";
 import {NotFoundException} from "../exceptions/not-found.exception";
 
 export class ProductService {
 
     constructor(
-        private readonly productRepository: ProductRepository,
+        private readonly productRepository: ProductRepositoryInterface,
     ) {}
 
     public async addProduct(product: Product): Promise<Product> {

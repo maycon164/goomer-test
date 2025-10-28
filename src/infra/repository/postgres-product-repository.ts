@@ -1,8 +1,8 @@
-import {ProductRepository} from "../../core/repository/product-repository.interface";
+import {ProductRepositoryInterface} from "../../core/repository/product-repository.interface";
 import {Product} from "../../core/model/product";
 import { Pool } from "pg";
 
-export class PostgresProductRepository implements ProductRepository {
+export class PostgresProductRepository implements ProductRepositoryInterface {
     constructor(private readonly pool: Pool) {}
 
     async findById(productId: number): Promise<Product | null> {

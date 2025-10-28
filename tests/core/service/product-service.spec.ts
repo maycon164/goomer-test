@@ -1,11 +1,11 @@
-import { ProductRepository } from "../../../src/core/repository/product-repository.interface";
+import { ProductRepositoryInterface } from "../../../src/core/repository/product-repository.interface";
 import { Product } from "../../../src/core/model/product";
 import { NotFoundException } from "../../../src/core/exceptions/not-found.exception";
 import { Category } from "../../../src/core/model/product";
 import {ProductService} from "../../../src/core/services/product-service";
 
 describe("ProductService", () => {
-    let productRepository: jest.Mocked<ProductRepository>;
+    let productRepository: jest.Mocked<ProductRepositoryInterface>;
     let productService: ProductService;
     let mockProduct: Product;
 
@@ -17,7 +17,7 @@ describe("ProductService", () => {
             update: jest.fn(),
             delete: jest.fn(),
             exists: jest.fn(),
-        } as unknown as jest.Mocked<ProductRepository>;
+        } as unknown as jest.Mocked<ProductRepositoryInterface>;
 
         productService = new ProductService(productRepository);
 
