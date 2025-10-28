@@ -1,13 +1,19 @@
 import { Router } from "express";
-import {ProductController} from "./controllers/product-controller";
-import {ProductService} from "../../core/product-service";
+import { ProductController } from "./controllers/product-controller";
+import { ProductService } from "../../core/services/product-service";
+import { PostgresProductRepository } from "../repository/postgres-product-repository";
+import { pool } from "../db/db";
 
 const router = Router();
 
-const productService = new ProductService();
+
+const productRepository = new PostgresProductRepository(pool);
+const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 
-router.get("/users", (req, res) => productController.getProducts(req, res));
-
+router.get("/products", (req, res) => productController.getProducts(req, res));
+router.post("/products", (req, res) => productController.saveProduct(req, res));
+router.put("/products/:id", (req, res) => productController.updateProduct(req, res));
+router.delete("/products/:id", (req, res) => productController.deleteProduct(req, res))
 
 export default router;
