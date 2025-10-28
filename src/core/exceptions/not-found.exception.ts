@@ -1,10 +1,7 @@
-export class NotFoundException extends Error {
-    public statusCode: number;
+import {BaseErrorException} from "./base-error-exception";
 
+export class NotFoundException extends BaseErrorException {
     constructor(message: string) {
-        super(message);
-        this.name = "NotFoundException";
-        this.statusCode = 404;
-        Object.setPrototypeOf(this, NotFoundException.prototype);
+        super(message, 404, "NotFoundException");
     }
 }

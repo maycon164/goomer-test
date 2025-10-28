@@ -1,10 +1,7 @@
-export class BadRequestException extends Error {
-    public statusCode: number;
+import {BaseErrorException} from "./base-error-exception";
 
+export class BadRequestException extends BaseErrorException {
     constructor(message: string) {
-        super(message);
-        this.name = "BadRequestException";
-        this.statusCode = 400;
-        Object.setPrototypeOf(this, BadRequestException.prototype);
+        super(message, 400, "BadRequestException");
     }
 }
