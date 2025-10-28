@@ -25,5 +25,7 @@ const promotionController = new PromotionController(promotionService);
 
 router.get("/promotions", (req, res) => promotionController.getPromotions(req, res))
 router.post("/promotions", (req, res) => promotionController.savePromotion(req, res))
+router.put("/promotions/:id", (req, res) => promotionController.updatePromotion(req, res));
+router.delete("/promotions/:id", (req, res) => promotionController.deletePromotion(req, res));
 
 export default router;

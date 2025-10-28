@@ -37,9 +37,7 @@ export class ProductController {
 
         const product = await this.productService.updateProduct(productId, (_req.body as Partial<Product>))
 
-        return res.status(202).json(product);
-
-
+        return res.status(200).json(product);
     }
 
     public async deleteProduct(_req: Request, res: Response) {

@@ -128,6 +128,73 @@ export class Promotion {
         );
     }
 
+    public update(fields: Partial<Omit<Promotion, "_id">>) {
+        if (!fields) {
+            throw new BadRequestException("Request body is missing");
+        }
+
+        if (fields.description != null) {
+            if (fields.description.trim().length === 0) {
+                throw new BadRequestException("Description cannot be empty");
+            }
+            this._description = fields.description;
+        }
+
+        if (fields.price != null) {
+            if (fields.price <= 0) {
+                throw new BadRequestException("Price must be greater than 0");
+            }
+            this._price = fields.price;
+        }
+
+        if (fields.daysOfWeek != null) {
+            if (!Array.isArray(fields.daysOfWeek) || fields.daysOfWeek.length === 0) {
+                throw new BadRequestException("daysOfWeek must be a non-empty array");
+            }
+
+            const invalidDays = fields.daysOfWeek.filter(
+                (d: string) => !Object.values(DAYS).includes(d as DAYS)
+            );
+
+            if (invalidDays.length > 0) {
+                throw new BadRequestException(`Invalid daysOfWeek: ${invalidDays.join(", ")}`);
+            }
+
+            this._daysOfWeek = fields.daysOfWeek;
+        }
+
+        if (fields.initTime != null) {
+            this.validateTime(fields.initTime, "initTime");
+            this._initTime = fields.initTime;
+
+            this.validateTimeDifference(this._initTime, this._endTime);
+        }
+
+        if (fields.endTime != null) {
+            this.validateTime(fields.endTime, "endTime");
+            this._endTime = fields.endTime;
+
+            this.validateTimeDifference(this._initTime, this._endTime);
+        }
+
+        if (fields.productsIds != null) {
+            if (
+                !Array.isArray(fields.productsIds) ||
+                fields.productsIds.some((id: any) => typeof id !== "number")
+            ) {
+                throw new BadRequestException("productsIds must be an array of numbers");
+            }
+            this._productsIds = fields.productsIds;
+        }
+
+        if (fields.isActive != null) {
+            this._isActive = fields.isActive;
+        }
+
+        return this;
+    }
+
+
     toJSON() {
         return {
             id: this._id,
