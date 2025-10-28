@@ -18,7 +18,7 @@ export class Promotion {
         private _daysOfWeek: DAYS[],
         private _initTime: string,
         private _endTime: string,
-        private productsIds: number[],
+        private _productsIds: number[],
         private _isActive: boolean = true,
     ) {
         this.validateTime(_initTime, "initTime");
@@ -28,7 +28,7 @@ export class Promotion {
 
     private validateTime(time: string, field: string) {
         const regex = /^([01]\d|2[0-3]):([0-5]\d)$/; // HH:mm format
-        if (!regex.test(time)) {
+        if (!regex.test(time.trim())) {
             throw new BadRequestException(`${field} must be in 'HH:mm' format`);
         }
     }
@@ -74,12 +74,21 @@ export class Promotion {
         return this._endTime;
     }
 
+    get productsIds(): number[] {
+        return this._productsIds
+    }
+
+    get isActive(): boolean{
+        return this._isActive
+    }
+
     static createPromotion(requestBody: any): Promotion {
         if (!requestBody) {
             throw new BadRequestException("Request body is missing");
         }
 
         const { description, price, daysOfWeek, initTime, endTime, productsIds, isActive } = requestBody;
+        console.log(requestBody)
 
         if (!description || price == null || !daysOfWeek || !initTime || !endTime || !productsIds) {
             throw new BadRequestException("Missing required fields: description, price, daysOfWeek, initTime, endTime, or productsIds");
