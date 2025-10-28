@@ -9,14 +9,14 @@ export enum Category {
 
 export class Product {
     constructor(
-        private readonly _id: number,
+        private readonly _id: number | null,
         private _name: string,
         private _price: number,
         private _category: Category,
         private _isVisible: boolean
     ) {}
 
-    get id(): number {
+    get id(): number | null {
         return this._id;
     }
 

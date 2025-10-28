@@ -4,7 +4,7 @@ export interface ProductRepository {
 
     exists(productId: number): Promise<boolean>;
 
-    findById(productId: number): Promise<Product>;
+    findById(productId: number): Promise<Product | null>;
 
     save(product: Product): Promise<Product>;
     getAll(): Promise<Product[]>

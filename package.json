@@ -7,7 +7,8 @@
     "dev": "npx tsx src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js",
-    "migrate": " src/flyway \"-configFiles=./conf/flyway.conf\" migrate"
+    "migrate": " flyway \"-configFiles=./conf/flyway.conf\" migrate",
+    "test": "jest"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
@@ -16,8 +17,11 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.4",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.9.1",
     "@types/pg": "^8.15.5",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"

@@ -5,7 +5,7 @@ import { Pool } from "pg";
 export class PostgresProductRepository implements ProductRepository {
     constructor(private readonly pool: Pool) {}
 
-    async findById(productId: number): Promise<Product> {
+    async findById(productId: number): Promise<Product | null> {
         const SELECT_QUERY = `
         SELECT id, name, price, category, is_visible
         FROM products
