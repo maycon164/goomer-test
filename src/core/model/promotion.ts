@@ -19,7 +19,7 @@ export class Promotion {
         private _initTime: string,
         private _endTime: string,
         private productsIds: number[],
-        private _isActive?: boolean = true,
+        private _isActive: boolean = true,
     ) {
         this.validateTime(_initTime, "initTime");
         this.validateTime(_endTime, "endTime");
@@ -74,23 +74,49 @@ export class Promotion {
         return this._endTime;
     }
 
-    set price(value: number) {
-        if (value <= 0) {
+    static createPromotion(requestBody: any): Promotion {
+        if (!requestBody) {
+            throw new BadRequestException("Request body is missing");
+        }
+
+        const { description, price, daysOfWeek, initTime, endTime, productsIds, isActive } = requestBody;
+
+        if (!description || price == null || !daysOfWeek || !initTime || !endTime || !productsIds) {
+            throw new BadRequestException("Missing required fields: description, price, daysOfWeek, initTime, endTime, or productsIds");
+        }
+
+        if (description.trim().length === 0) {
+            throw new BadRequestException("Description cannot be empty");
+        }
+
+        if (price <= 0) {
             throw new BadRequestException("Price must be greater than 0");
         }
-        this._price = value;
-    }
 
-    set initTime(value: string) {
-        this.validateTime(value, "initTime");
-        this.validateTimeDifference(value, this._endTime);
-        this._initTime = value;
-    }
+        if (!Array.isArray(daysOfWeek) || daysOfWeek.length === 0) {
+            throw new BadRequestException("daysOfWeek must be a non-empty array");
+        }
 
-    set endTime(value: string) {
-        this.validateTime(value, "endTime");
-        this.validateTimeDifference(this._initTime, value);
-        this._endTime = value;
+        const invalidDays = daysOfWeek.filter((d: string) => !Object.values(DAYS).includes(d as DAYS));
+
+        if (invalidDays.length > 0) {
+            throw new BadRequestException(`Invalid daysOfWeek: ${invalidDays.join(", ")}`);
+        }
+
+        if (!Array.isArray(productsIds) || productsIds.some((id: any) => typeof id !== "number")) {
+            throw new BadRequestException("productsIds must be an array of numbers");
+        }
+
+        return new Promotion(
+            null,
+            description,
+            price,
+            daysOfWeek,
+            initTime,
+            endTime,
+            productsIds,
+            isActive ?? true
+        );
     }
 
     toJSON() {
